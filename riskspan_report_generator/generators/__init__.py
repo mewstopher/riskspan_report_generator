@@ -12,15 +12,25 @@ class ReportGenerator(ABC):
     def create_report(self, df: pd.DataFrame):
         report = self.report_factory()
         report_strata = report.get_strata(df)
+        lc_tot = 0
+        ab_tot = 0
+        max_bal_tot = 0
+        min_bal_tot = 0
         for category in report.stratum_names:
             category_subset = report_strata[category]
             lc = self.loan_count(category_subset)
+            lc_tot += lc
             ab = self.average_balance(category_subset)
+            ab_tot += ab
             max_bal = self.max_balance(category_subset)
+            max_bal_tot += max_bal
             min_bal = self.min_balance(category_subset)
+            min_bal_tot += min_bal
             print(f'{category} \n '
                   f'Loan Count: {lc} Average Current Balance: {ab} Max Current Balance: {max_bal} '
                   f'Min Current Balance: {min_bal}')
+        print(f'Totals \n Loan count: {lc_tot} average balance: {ab_tot} max balance: {max_bal_tot} '
+              f'min balance: {min_bal_tot}')
 
     def loan_count(self, df_subset):
         return df_subset.shape[0]
