@@ -1,4 +1,4 @@
-from riskspan_report_generator.generators import ReportGenerator, Report
+from riskspan_report_generator.generators import ReportGenerator, CrossTabGenerator, Report
 import pandas as pd
 
 
@@ -16,6 +16,10 @@ class LoanAgeGenerator(ReportGenerator):
     def report_factory(self):
         return LoanAgeReport()
 
+
+class FicoLtvCreator(CrossTabGenerator):
+    def crosstab_factory(self):
+        return CrossTabReport()
 
 class LenderReport(Report):
 
@@ -75,4 +79,19 @@ def calculate_month(start_date, end_date) -> int:
     total_months = months_year + end_date.month - start_date.month
     return total_months
 
+
+class CrossTabReport(Report):
+    @property
+    def stratum_names(self):
+        categories = ['< 600', '600 - 699', '700-799', '>= 800']
+        return categories
+
+    def get_strata(self, df):
+        strata = {
+            '< 600': [df.loc[df['FICO_SCORE'] < 600]],
+            '600 - 699': None,
+            '700-799': None,
+            '>= 800': None
+        }
+        return strata
 

@@ -10,10 +10,10 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 NAME = 'riskspan_report_generator'
-DESCRIPTION = 'you would be mu, too'
-URL = 'https://email.com/mu.mewstopher/riskspan_report_generator'
-EMAIL = 'mu.mewstopher@email.com'
-AUTHOR = 'mewstopher mewington'
+DESCRIPTION = 'ye olde reporte generator'
+URL = 'https://email.com/first.last/riskspan_report_generator'
+EMAIL = 'first.last@email.com'
+AUTHOR = 'firstname last'
 REQUIRES_PYTHON = '>=3.7.0'
 VERSION = None
 
@@ -72,7 +72,6 @@ class UploadCommand(Command):
         sys.exit()
 
 
-# where the magic happens
 setup(
     name=NAME,
     version=about['__version__'],
