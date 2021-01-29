@@ -21,6 +21,7 @@ class FicoLtvCreator(CrossTabGenerator):
     def crosstab_factory(self):
         return CrossTabReport()
 
+
 class LenderReport(Report):
 
     @property
@@ -88,10 +89,10 @@ class CrossTabReport(Report):
 
     def get_strata(self, df):
         strata = {
-            '< 600': [df.loc[df['FICO_SCORE'] < 600]],
-            '600 - 699': None,
-            '700-799': None,
-            '>= 800': None
+            '< 600': df.loc[df['FICO_SCORE'] < 600],
+            '600 - 699': df.loc[(df['FICO_SCORE'] >= 600) & (df['FICO_SCORE'] < 700)],
+            '700-799': df.loc[(df['FICO_SCORE'] >= 700) & (df['FICO_SCORE'] < 799)],
+            '>= 800': df.loc[df['FICO_SCORE'] >= 800]
         }
         return strata
 

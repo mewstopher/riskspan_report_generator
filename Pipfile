@@ -13,6 +13,7 @@ riskspan-report-generator = {editable = true,path = "."}
 pandas = "*"
 xlrd = "*"
 openpyxl = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
