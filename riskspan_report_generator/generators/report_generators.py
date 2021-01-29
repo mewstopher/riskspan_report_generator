@@ -61,7 +61,6 @@ class LoanAgeReport(Report):
 
     def get_strata(self, df: pd.DataFrame) -> dict:
         df_null_date = df.loc[df['LOAN_ORIG_DATE'].isnull()]
-        df_with_date = df.loc[df['LOAN_ORIG_DATE'].notnull()]
         df['months_diff'] = list(map(calculate_month, df.LOAN_ORIG_DATE, df.START_DATE))
         strata = {
             '0 - 9 months': df.loc[df['months_diff'] <= 9],
