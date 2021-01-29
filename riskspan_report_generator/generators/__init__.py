@@ -59,8 +59,10 @@ class CrossTabGenerator(ABC):
         ax = cross_tab.plot.bar()
         ax.set_xlabel("FICO Score")
         ax.set_ylabel("Count")
-        plt.legend('LTV')
-        return cross_tab
+        plt.legend(title='LTV')
+        for p in ax.patches:
+            ax.annotate(str(p.get_height()), (p.get_x(), p.get_height() + 20), rotation=90)
+        return plt
 
 
 class Report(ABC):

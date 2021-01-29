@@ -16,11 +16,11 @@ def main(args=None):
 
 
 @main.command()
-@click.argument('data_file')
-@click.argument('data_sheet')
-def lender_report(data_file, data_sheet):
+@click.option('--data', type=click.Path(resolve_path=True, exists=True, dir_okay=False))
+@click.option('--sheetname')
+def lender_report(data, sheetname):
     try:
-        loader = DataLoader(data_file, data_sheet)
+        loader = DataLoader(data, sheetname)
         df = loader.extract_df()
         lender = LenderGenerator()
         lender.create_report(df)
@@ -30,11 +30,11 @@ def lender_report(data_file, data_sheet):
 
 
 @main.command()
-@click.argument('data_file')
-@click.argument('data_sheet')
-def ltv_report(data_file, data_sheet):
+@click.option('--data', type=click.Path(resolve_path=True, exists=True, dir_okay=False))
+@click.option('--sheetname')
+def ltv_report(data, sheetname):
     try:
-        loader = DataLoader(data_file, data_sheet)
+        loader = DataLoader(data, sheetname)
         df = loader.extract_df()
         ltv = LtvGenerator()
         ltv.create_report(df)
@@ -44,11 +44,11 @@ def ltv_report(data_file, data_sheet):
 
 
 @main.command()
-@click.argument('data_file')
-@click.argument('data_sheet')
-def loan_age_report(data_file, data_sheet):
+@click.option('--data', type=click.Path(resolve_path=True, exists=True, dir_okay=False))
+@click.option('--sheetname')
+def loan_age_report(data, sheetname):
     try:
-        loader = DataLoader(data_file, data_sheet)
+        loader = DataLoader(data, sheetname)
         df = loader.extract_df()
         loan_age = LoanAgeGenerator()
         loan_age.create_report(df)
@@ -58,27 +58,32 @@ def loan_age_report(data_file, data_sheet):
 
 
 @main.command()
-@click.argument('data_file')
-@click.argument('data_sheet')
-def crosstab_report(data_file, data_sheet):
+@click.option('--data', type=click.Path(resolve_path=True, exists=True, dir_okay=False))
+@click.option('--sheetname')
+def crosstab_report(data, sheetname):
     try:
-        loader = DataLoader(data_file, data_sheet)
+        loader = DataLoader(data, sheetname)
         df = loader.extract_df()
         cross_tab = FicoLtvCreator()
-        cross_tab.create_crosstab(df)
+        ct_report = cross_tab.create_crosstab(df)
+        print(ct_report)
     except Exception as exc:
         click.secho(str(exc), fg='red', err=True)
     return 0
 
+
 @main.command()
-@click.argument('data_file')
-@click.argument('data_sheet')
-def plot_crosstab(data_file, data_sheet):
+@click.option('--data', type=click.Path(resolve_path=True, exists=True, dir_okay=False))
+@click.option('--sheetname')
+@click.option('--save_loc', type=click.Path(exists=False, dir_okay=False, resolve_path=True))
+def plot_crosstab(data, sheetname, save_loc):
     try:
-        loader = DataLoader(data_file, data_sheet)
+        loader = DataLoader(data, sheetname)
         df = loader.extract_df()
         cross_tab = FicoLtvCreator()
-        cross_tab.plot_graph(df)
+        bar_chart = cross_tab.plot_graph(df)
+        bar_chart.savefig(save_loc)
+
     except Exception as exc:
         click.secho(str(exc), fg='red', err=True)
     return 0
