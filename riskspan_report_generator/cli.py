@@ -1,6 +1,6 @@
 # _*_ coding: utf-8 _*_
 
-from riskspan_report_generator.generators.report_generators import LenderGenerator, LtvGenerator
+from riskspan_report_generator.generators.report_generators import LenderGenerator, LtvGenerator, LoanAgeGenerator
 from riskspan_report_generator.processors import DataLoader
 from logging.config import fileConfig
 import click
@@ -37,6 +37,20 @@ def ltv_report(data_file, data_sheet):
         df = loader.extract_df()
         ltv_generator = LtvGenerator()
         ltv_generator.create_report(df)
+    except Exception as exc:
+        click.secho(str(exc), fg='red', err=True)
+    return 0
+
+
+@main.command()
+@click.argument('data_file')
+@click.argument('data_sheet')
+def loan_age_report(data_file, data_sheet):
+    try:
+        loader = DataLoader(data_file, data_sheet)
+        df = loader.extract_df()
+        age_generator = LoanAgeGenerator()
+        age_generator.create_report(df)
     except Exception as exc:
         click.secho(str(exc), fg='red', err=True)
     return 0
